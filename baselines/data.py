@@ -28,3 +28,7 @@ data = tosparse(data)
 data_full = tosparse(data_full)
 data.adj_t = data.adj_t.to_symmetric()
 data_full.adj_t = data_full.adj_t.to_symmetric()
+num_classes = dataset.num_classes
+
+if __name__ == '__main__':
+    print(id(data), id(data_full))

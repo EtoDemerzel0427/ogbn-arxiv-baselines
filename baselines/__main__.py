@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from .logger import Logger
 from .data import data, data_full, split_idx, num_classes
 from ogb.nodeproppred import Evaluator
-from .models import GCN, SAGE
+from .models import GCN, SAGE, GAT, APPNPNet, JKNet
 
 
 def train(model, data, train_idx, optimizer):
@@ -48,10 +48,16 @@ parser.add_argument('--log_steps', type=int, default=1)
 parser.add_argument('--num_layers', type=int, default=3)
 parser.add_argument('--hidden_channels', type=int, default=256)
 parser.add_argument('--dropout', type=float, default=0.5)
+parser.add_argument('--att_dropout', type=float, default=0.0)
+parser.add_argument('--heads', type=int, default=4)
 parser.add_argument('--lr', type=float, default=0.01)
 parser.add_argument('--epochs', type=int, default=500)
 parser.add_argument('--runs', type=int, default=10)
+parser.add_argument('--K', type=int, default=10)
+parser.add_argument('--alpha', type=float, default=0.1)
+parser.add_argument('--mode', type=str, default='concat')
 args = parser.parse_args()
+print(args)
 
 logger = Logger(args.runs, args)
 evaluator = Evaluator(name='ogbn-arxiv')
@@ -59,7 +65,7 @@ evaluator = Evaluator(name='ogbn-arxiv')
 device = f'cuda:{args.device}' if torch.cuda.is_available() else 'cpu'
 device = torch.device(device)
 
-# TODO: add all
+model = None
 if args.model == 'gcn':
     model = GCN(data.num_features, args.hidden_channels,
                 num_classes, args.num_layers,
@@ -68,6 +74,18 @@ elif args.model == 'sage':
     model = SAGE(data.num_features, args.hidden_channels,
                  num_classes, args.num_layers,
                  args.dropout).to(device)
+elif args.model == 'gat':
+    model = GAT(data.num_features, args.hidden_channels,
+                num_classes, args.num_layers, args.heads,
+                args.dropout, args.att_dropout).to(device)
+elif args.model == 'appnp':
+    model = APPNPNet(data.num_features, args.hidden_channels,
+                     num_classes, args.num_layers,
+                     args.K, args.alpha, args.dropout)
+elif args.model == 'jknet':
+    model = JKNet(data.num_features, args.hidden_channels,
+                  num_classes, args.num_layers,
+                  args.dropout, args.mode)
 
 
 def run_model(model, train_idx, evaluator):
@@ -91,6 +109,5 @@ def run_model(model, train_idx, evaluator):
         logger.print_statistics(run)
     logger.print_statistics()
 
-
-
+run_model(model, split_idx['train'], Evaluator)
 

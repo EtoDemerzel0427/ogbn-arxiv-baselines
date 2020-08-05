@@ -1,1 +1,10 @@
 *.txt
+dataset/*
+compare.py
+*.ipynb
+both_*.py
+only_gcn.py
+*.ods
+*__pycache__*
+.idea/*
+.DS_Store

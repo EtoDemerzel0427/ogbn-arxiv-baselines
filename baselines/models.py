@@ -67,7 +67,7 @@ class SAGE(torch.nn.Module):
 
 
 class GAT(torch.nn.Module):
-    def __init__(self, in_channels, hidden_channels, out_channels, heads, num_layers,
+    def __init__(self, in_channels, hidden_channels, out_channels, num_layers, heads,
                  dropout, att_dropout):
         super(GAT, self).__init__()
 
@@ -100,7 +100,7 @@ class GAT(torch.nn.Module):
 
 
 class APPNPNet(torch.nn.Module):
-    def __init__(self, in_channels, hidden_channels, num_layers, out_channels, K, alpha,
+    def __init__(self, in_channels, hidden_channels, out_channels, num_layers, K, alpha,
         dropout):
         super(APPNPNet, self).__init__()
 
