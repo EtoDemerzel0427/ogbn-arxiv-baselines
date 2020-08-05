@@ -38,3 +38,13 @@ Highest Valid: 72.73 ± 0.11
    Final Test: 71.44 ± 0.21
 ```
 
+## JKNet
+```shell script
+JKNet
+All runs:
+Highest Train: 76.72 ± 0.12
+Highest Valid: 73.16 ± 0.06
+  Final Train: 76.20 ± 0.21
+   Final Test: 71.97 ± 0.26
+```
+
