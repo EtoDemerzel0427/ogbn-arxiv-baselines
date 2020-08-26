@@ -142,3 +142,44 @@ logger.print_statistics()
 # Highest Valid: 73.35 ± 0.07
 # Final Train: 77.24 ± 0.21
 # Final Test: 72.19 ± 0.21
+
+# Param num:
+# +----------------+------------+
+# |    Modules     | Parameters |
+# +----------------+------------+
+# | convs.0.weight |   16384    |
+# |  convs.0.bias  |    128     |
+# | convs.1.weight |   16384    |
+# |  convs.1.bias  |    128     |
+# | convs.2.weight |   16384    |
+# |  convs.2.bias  |    128     |
+# | convs.3.weight |   16384    |
+# |  convs.3.bias  |    128     |
+# | convs.4.weight |   16384    |
+# |  convs.4.bias  |    128     |
+# |  bns.0.weight  |    128     |
+# |   bns.0.bias   |    128     |
+# |  bns.1.weight  |    128     |
+# |   bns.1.bias   |    128     |
+# |  bns.2.weight  |    128     |
+# |   bns.2.bias   |    128     |
+# |  bns.3.weight  |    128     |
+# |   bns.3.bias   |    128     |
+# |  bns.4.weight  |    128     |
+# |   bns.4.bias   |    128     |
+# |   lin.weight   |    5120    |
+# |    lin.bias    |     40     |
+# +----------------+------------+
+# Total Trainable Params: 89000
+# use the following function:
+def count_parameters(model):
+    table = PrettyTable(["Modules", "Parameters"])
+    total_params = 0
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad: continue
+        param = parameter.numel()
+        table.add_row([name, param])
+        total_params+=param
+    print(table)
+    print(f"Total Trainable Params: {total_params}")
+    return total_params
